@@ -2,7 +2,13 @@
   "name": "pilot",
   "version": "0.1.0",
   "private": true,
-  "main": "electron/main.js",
+  "main": "public/electron.js",
+  "homepage": "./",
+  "author": {
+    "name": "adriano gotardo",
+    "email": "adrianogotardo.12@gmail.com"
+  },
+  "description": "teste",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
@@ -14,7 +20,24 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "electron": "electron ."
+    "build": "react-scripts build",
+    "electron": "electron .",
+    "both": "concurrently \"npm:start\" \"npm:electron\"",
+    "electron:packager": "npx electron-packager . --overwrite --icon assets/imgs/trayIcon.ico --out=packages",
+    "electron:package:win": "npm run build && electron-builder -w -c.extraMetadata.main=build/electron.js",
+    "electron:package:mac": "npm run build && electron-builder -m -c.extraMetadata.main=build/electron.js",
+    "electron:package:lin": "npm run build && electron-builder -l -c.extraMetadata.main=build/electron.js"
+  },
+  "build": {
+    "appId": "com.example.electron",
+    "productName": "pilot v0",
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    }
   },
   "eslintConfig": {
     "extends": [
@@ -35,6 +58,8 @@
     ]
   },
   "devDependencies": {
-    "electron": "^21.2.0"
+    "concurrently": "^7.5.0",
+    "electron": "^21.2.0",
+    "electron-builder": "^23.6.0"
   }
 }
